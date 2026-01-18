@@ -98,6 +98,11 @@ function authenticateToken(req, res, next) {
 
 // --- 4. API 路由實作 ---
 
+// 測試用：根目錄路由 (讓我知道伺服器活著)
+app.get('/', (req, res) => {
+    res.send('Hello! Daily Flow Backend is running correctly.');
+});
+
 app.post('/api/login', 
     loginLimiter,
     [
