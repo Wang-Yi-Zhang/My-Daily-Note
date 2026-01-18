@@ -30,6 +30,7 @@ const corsOptions = {
         'http://127.0.0.1:5500', // Live Server 預設 IP
         'http://localhost:5500', // Live Server 有時也會用 localhost
         'http://localhost:3000', // 本機測試
+        'https://wang-yi-zhang.github.io', // 你的 GitHub Pages 網址 
         process.env.FRONTEND_URL // 讀取 .env 設定 (以防萬一)
     ].filter(Boolean), // 過濾掉 undefined
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
