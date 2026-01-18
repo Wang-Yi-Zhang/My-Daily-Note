@@ -145,3 +145,7 @@ npm run dev
 | DELETE | /api/notes/:rowIndex | 刪除筆記，刪除指定列。若有同步，會一併刪除 Google Calendar 事件。           | JWT           |
 | GET    | /api/categories      | 讀取類別，取得系統設定的類別與顏色。                                  | JWT           |
 | GET    | /api/roles           | 讀取角色，取得人生角色與目標設定。                                   | JWT           |
+
+## License
+
+MIT
