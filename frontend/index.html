@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Flow | 個人筆記與目標</title>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Zen+Maru+Gothic:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="login-overlay" class="overlay active">
+        <div class="login-box">
+            <h2>Welcome Back</h2>
+            <div class="form-group">
+                <input type="text" id="login-username" placeholder="帳號" value="admin">
+            </div>
+            <div class="form-group">
+                <input type="password" id="login-password" placeholder="密碼...">
+            </div>
+            
+            <div style="margin: 15px 0; text-align: left; padding-left: 5px;">
+                <label class="checkbox-container" style="justify-content: center;">
+                    <input type="checkbox" id="login-remember">
+                    <span>保持登入</span>
+                </label>
+            </div>
+
+            <button onclick="handleLogin()">進入系統</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Daily Flow</h1>
+            <div class="header-actions">
+                <button onclick="openSettings()" class="icon-btn" title="帳號設定">⚙️</button>
+                <button id="add-btn" class="fab">+</button>
+            </div>
+        </header>
+
+        <section class="dashboard">
+            <div class="stats-header">
+                <h3>本月目標達成率</h3>
+                <div class="stats-tabs">
+                    <button class="tab-btn active" onclick="switchStats('category')">類別視角</button>
+                    <button class="tab-btn" onclick="switchStats('role')">目標視角</button>
+                </div>
+            </div>
+
+            <div id="stats-container" class="stats-grid">
+                </div>
+            
+            <div id="role-stats-container" class="stats-grid" style="display:none;">
+                </div>
+        </section>
+
+        <div class="filter-bar">
+            <span>🔍 篩選筆記：</span>
+            <select id="filter-role" onchange="applyFilters()">
+                <option value="all">所有目標</option>
+                </select>
+        </div>
+
+        <section class="notes-list" id="notes-container">
+            </section>
+    </div>
+
+    <div id="note-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-title">新增筆記</h2>
+            <form id="note-form">
+                <input type="hidden" id="note-rowIndex">
+                
+                <div class="form-row">
+                    <div class="form-group" style="flex:1">
+                        <label>日期</label>
+                        <input type="date" id="note-date" required>
+                    </div>
+                    <div class="form-group" style="flex:1">
+                        <label>類別</label>
+                        <select id="note-category" required>
+                            </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>角色 / 目標</label>
+                    <select id="note-role" required>
+                        <option value="" disabled selected>請選擇目標...</option>
+                        </select>
+                </div>
+
+                <div class="form-group">
+                    <label>內容</label>
+                    <textarea id="note-content" rows="4" required></textarea>
+                </div>
+
+                <div class="sync-section">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="note-sync">
+                        <span>同步至 Google Calendar</span>
+                    </label>
+
+                    <div id="calendar-options" class="hidden-options">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>開始時間</label>
+                                <input type="time" id="note-start-time">
+                            </div>
+                            <div class="form-group">
+                                <label>結束時間</label>
+                                <input type="time" id="note-end-time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>重複頻率</label>
+                            <select id="note-recurrence">
+                                <option value="none">不重複</option>
+                                <option value="DAILY">每天</option>
+                                <option value="WEEKLY">每週</option>
+                                <option value="MONTHLY">每月</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="save-btn">儲存紀錄</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSettings()">&times;</span>
+            <h2>帳號設定</h2>
+            <div class="form-group">
+                <label>舊密碼</label>
+                <input type="password" id="setting-old-pwd">
+            </div>
+            <div class="form-group">
+                <label>新密碼</label>
+                <input type="password" id="setting-new-pwd">
+            </div>
+            <button onclick="changePassword()" class="save-btn">更新密碼</button>
+            
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+            
+            <button onclick="handleLogout()" style="width:100%; background:#ff6b6b; color:white; border:none; padding:12px; border-radius:10px; cursor:pointer;">登出系統</button>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

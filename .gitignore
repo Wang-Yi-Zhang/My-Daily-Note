@@ -1,0 +1,22 @@
+# --- 安全性 ---
+# Google Service Account 金鑰
+credentials.json
+# 環境變數
+.env
+# 如果你有用其他 OAuth 產生的 token 檔
+token.json
+
+# --- 依賴套件 ---
+node_modules/
+
+# --- 系統與編輯器暫存檔 ---
+# macOS 系統檔
+.DS_Store
+# Windows 系統檔
+Thumbs.db
+# VS Code 設定 (看個人習慣，通常建議忽略)
+.vscode/
+
+# --- Log 紀錄檔 ---
+*.log
+npm-debug.log*

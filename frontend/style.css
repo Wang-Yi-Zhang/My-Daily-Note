@@ -1,0 +1,474 @@
+/* --- 1. 全域變數與基礎設定 --- */
+:root {
+    /* 配色系統 */
+    --bg-color: #fbfbfb;         /* 整體背景灰白 */
+    --card-bg: #ffffff;          /* 卡片背景白 */
+    --text-color: #4a4a4a;       /* 主要文字深灰 */
+    --text-light: #888888;       /* 次要文字淺灰 */
+    --primary-color: #7b9acc;    /* 主色調：柔和藍 */
+    --primary-hover: #6a89bb;    /* 主色調懸浮 */
+    --danger-color: #ff6b6b;     /* 警告/刪除紅 */
+    
+    /* 陰影與圓角 */
+    --shadow: 0 8px 20px rgba(0,0,0,0.06);
+    --shadow-hover: 0 12px 25px rgba(0,0,0,0.1);
+    --radius: 16px;
+    
+    /* 字體 */
+    --font-main: 'Zen Maru Gothic', sans-serif;
+    --font-ui: 'Varela Round', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- 2. 登入遮罩 (Login Overlay) --- */
+.overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.98); /* 不透明度高的背景 */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.login-box {
+    text-align: center;
+    width: 100%;
+    max-width: 320px;
+    padding: 40px 30px;
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.login-box h2 {
+    font-family: var(--font-ui);
+    color: var(--primary-color);
+    margin-bottom: 25px;
+}
+
+.login-box button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.login-box button:hover {
+    background: var(--primary-hover);
+}
+
+/* --- 3. 主版面配置 (Layout) --- */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 80px; /* 預留底部空間給手機版 */
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-top: 10px;
+}
+
+h1 {
+    font-family: var(--font-ui);
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* 按鈕樣式 */
+.icon-btn {
+    background: white;
+    border: none;
+    font-size: 1.4rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+}
+
+.icon-btn:hover {
+    transform: rotate(45deg);
+    background: #f0f0f0;
+}
+
+.fab {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 26px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(123, 154, 204, 0.4);
+    transition: transform 0.2s, background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fab:hover {
+    transform: scale(1.05);
+    background: var(--primary-hover);
+}
+
+/* --- 4. 儀表板 (Dashboard) --- */
+.stats-card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+.stats-card h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 15px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+}
+
+.stat-item {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.stat-item small {
+    color: var(--text-light);
+    display: block;
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    height: 6px;
+    background: #eee;
+    border-radius: 3px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- 5. 筆記列表 (Notes List) --- */
+.note-card {
+    background: var(--card-bg);
+    padding: 18px;
+    border-radius: var(--radius);
+    margin-bottom: 15px;
+    box-shadow: var(--shadow);
+    border-left: 5px solid #ccc; /* JS 動態改色 */
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.note-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+
+.note-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    color: var(--text-light);
+    margin-bottom: 8px;
+}
+
+.note-header b {
+    color: var(--text-color);
+    font-size: 1.05em;
+    margin-right: 5px;
+}
+
+.note-actions {
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.note-card:hover .note-actions {
+    opacity: 1;
+}
+
+.note-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    padding: 4px;
+    margin-left: 5px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.note-actions button:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.note-meta {
+    margin-bottom: 8px;
+}
+
+.note-content {
+    font-size: 1rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: #555;
+}
+
+/* --- 6. Modal 彈窗樣式 --- */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0; top: 0; 
+    width: 100%; height: 100%; 
+    background-color: rgba(0,0,0,0.5); /* 半透明黑底 */
+    backdrop-filter: blur(2px); /* 背景模糊效果 */
+    animation: fadeIn 0.3s;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto; /* 距離頂部 */
+    padding: 25px;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh; /* 防止超過螢幕高度 */
+    overflow-y: auto; /* 若內容過長可捲動 */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    position: relative;
+    animation: slideUp 0.3s;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close:hover { color: var(--text-color); }
+
+/* --- 7. 表單元素 (Forms) --- */
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 0.95em; color: #666; }
+
+/* 並排欄位 */
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+.form-row .form-group {
+    margin-bottom: 0; /* 移除內部 margin 交給 row gap 控制 */
+}
+
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #fcfcfc;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(123, 154, 204, 0.1);
+}
+
+.save-btn {
+    width: 100%;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.save-btn:hover { background: var(--primary-hover); }
+
+/* --- 8. 同步與行事曆設定區塊 --- */
+.sync-section {
+    background: #f4f7fa;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #eef2f6;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--primary-color);
+    user-select: none;
+}
+
+.checkbox-container input {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.hidden-options {
+    display: none; /* 預設隱藏 */
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed #d0d7de;
+    animation: expandOptions 0.3s ease;
+}
+
+@keyframes expandOptions {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 9. RWD 響應式調整 --- */
+@media (max-width: 600px) {
+    .container { padding: 15px; }
+    h1 { font-size: 1.5rem; }
+    .form-row { flex-direction: column; gap: 15px; }
+    .note-header { flex-direction: column; align-items: flex-start; gap: 5px; }
+    .note-actions { position: absolute; top: 15px; right: 15px; opacity: 1; }
+    .modal-content { margin: 10% auto; width: 95%; padding: 20px; }
+}
+
+/* --- 10. 新增樣式：篩選與 Tabs --- */
+
+/* 篩選工具列 */
+.filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 10px 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.filter-bar select {
+    width: auto;
+    padding: 8px 12px;
+    margin: 0;
+    flex: 1;
+    max-width: 200px;
+}
+
+/* 儀表板 Tabs */
+.stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.stats-tabs {
+    display: flex;
+    gap: 5px;
+    background: #eef2f6;
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.tab-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    cursor: pointer;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background: white;
+    color: var(--primary-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    font-weight: bold;
+}
